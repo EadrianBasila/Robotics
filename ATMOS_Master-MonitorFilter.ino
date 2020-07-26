@@ -150,23 +150,6 @@ void loop()
   Serial.println(String("Temperature: ") + tempStr + "," + String("Humidity: ") + hmdStr + "," + String(" Formaldehyde%: ") + FMHDS + "," +String(" Particulate Matters%: ") + PMS );
   Serial.println();
   
-  myFile = SD.open("test.txt", FILE_WRITE);
-  if (myFile) {    
-    myFile.print(tempStr);
-    myFile.print(",");
-    myFile.print(hmdStr);
-    myFile.print(",");   
-    myFile.print(FMHDS);
-    myFile.print(",");
-    myFile.print(PMS);
-    myFile.println();
-    myFile.close(); // close the file
-  }
-  else {
-    Serial.println("error opening test.txt");
-  }
-  delay(3000);
-
     buttonStateA = digitalRead(buttonPinAir);
     buttonStateB = digitalRead(buttonPinTemp);
     buttonStateC = digitalRead(buttonPinHumid);
@@ -196,7 +179,7 @@ void loop()
          display.print(" Good");
       }
       display.display();
-      
+      dataLogging(tempStr, hmdStr, FMHDS, PMS);
     
       if (PMS  >= 10) {
         digitalWrite(44, LOW);
@@ -224,6 +207,24 @@ void loop()
 
 }
 
-
+void dataLogging(int tempStr, int hmdStr, int FMHDS, int PMS){  
+  
+  myFile = SD.open("test.txt", FILE_WRITE);
+  if (myFile) {    
+    myFile.print(tempStr);
+    myFile.print(",");
+    myFile.print(hmdStr);
+    myFile.print(",");   
+    myFile.print(FMHDS);
+    myFile.print(",");
+    myFile.print(PMS);
+    myFile.println();
+    myFile.close(); // close the file
+  }
+  else {
+    Serial.println("error opening test.txt");
+  }
+  delay(3000);
+}
 
 // 12C = 0x3C
